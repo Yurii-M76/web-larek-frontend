@@ -1,46 +1,48 @@
-import { IEvents } from "../components/base/events";
-
-/** Интерфейс данных товаров в Api */
-export interface IProduct {
-	id: string;
-	title: string;
-	description: string;
-	image: string;
-	category: string;
-	price: number | null;
-}
-
-/** Интерфейс товаров в каталоге*/
-export interface IProductList {
-	items: IProduct[];
-	events: IEvents;
-	getList(data: IProduct[]): IProduct[];
-}
-
-/** Тип id товара */
-export type TProductId = Pick<IProduct, 'id'>;
-
-/** Тип списка товаров */
-export type TProductItems = Pick<IProductList, 'items'>
-
-/** Тип данных товара на странице */
-export type TProductItem = Pick<IProduct, 'category' | 'title' | 'image' | 'price'>;
-
-/** Интерфейс корзины */
-export interface IBasket {
-	items: IProduct[]; 
+export interface IApi {
   total: number;
-	events: IEvents;
-	add(item: TProductId): void;
-	remove(item: TProductId): void;
-	getTotal(...items: IProduct[]): number;
-	check(item: TProductId): boolean;
-	disableButton(items: IProduct[]): boolean;
-	clear(): void;
+  items: ICatalog[];
 }
 
-/** Тип данных для модального окна успешного оформления заказа */
-export type TSuccess = Pick<IBasket, 'total'>;
+export interface ICatalog {
+  id: string,
+  description: string,
+  image: string,
+  title: string,
+  category: string,
+  price: number | null
+}
+
+
+
+
+// /** Интерфейс данных товара */
+// export interface IProductData {
+// 	id: string;
+// 	title: string;
+// 	description: string;
+// 	image: string;
+// 	category: 'софт-скил' | 'хард-скил' | 'другое' | 'дополнительное' | 'кнопка';
+// 	price: number | null;
+// }
+
+// /** Интерфейс товаров в каталоге*/
+// export interface IProductsList {
+// 	products: IProductData[];
+// 	preview: string | null;
+// 	events: IEvents;
+// 	get(data: string): IProductData;
+// }
+
+// /** Интерфейс корзины */
+// export interface IBasket {
+// 	items: Map<string, number>; 
+//   total: number;
+// 	events: IEvents;
+// 	add(id: string): void;
+// 	remove(id: string): void;
+// 	disableButton(total: number): boolean;
+// 	clear(): void;
+// }
 
 // /** Интерфейс формы заказа */
 // export interface IOrder {
