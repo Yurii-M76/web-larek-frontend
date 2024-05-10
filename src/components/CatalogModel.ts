@@ -36,4 +36,8 @@ export class CatalogModel extends Model {
   get data(): ICatalog[] {
     return this._items;
   }
+
+  find(id: string): ICatalog | undefined {
+		return this._items.find((item) => item.id === id);
+	}
 }

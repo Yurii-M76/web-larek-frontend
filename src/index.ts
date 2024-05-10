@@ -1,18 +1,19 @@
 import './scss/styles.scss';
 import { Api } from './components/base/api';
 import { API_URL } from './utils/constants';
-import { IApi, ICatalog } from './types/index';
+import { IApi, ICatalog, TProductId } from './types/index';
 import { cloneTemplate, ensureElement } from './utils/utils';
-import { EventEmitter } from "./components/base/events";
+import { EventEmitter, IEvents } from "./components/base/events";
 import { CatalogModel } from './components/CatalogModel';
 import { PageView } from './components/PageView';
-import { CardView } from './components/CardView';
+import { PreviewCard, ProductView } from './components/ProductView';
+import { View } from './components/base/View';
+import { Modal } from './components/Modal';
 
 const api = new Api(API_URL);
 const events = new EventEmitter();
 const catalog = new CatalogModel([], events);
 
-// Шаблоны
 const cardTemplate = ensureElement<HTMLTemplateElement>('#card-catalog');
 const cardPreviewTemplate = ensureElement<HTMLTemplateElement>('#card-preview');
 const cardBasketTemplate = ensureElement<HTMLTemplateElement>('#card-basket');
@@ -23,22 +24,35 @@ const successTemplate = ensureElement<HTMLTemplateElement>('#success');
 const pageContent = ensureElement<HTMLElement>('.page');
 const modalContainer = ensureElement<HTMLDivElement>('#modal-container');
 
-
 const page = new PageView(pageContent, events);
-const cardView = new CardView(cloneTemplate(cardTemplate), events);
+const previewCard = new PreviewCard(cloneTemplate(cardPreviewTemplate), events);
+const modal = new Modal(modalContainer, events);
+
 
 events.on('catalog:items-changed', (data: ICatalog[]) => {
-	const cardList = data.map((item) => {
-		const card = new CardView<ICatalog>(cloneTemplate(cardTemplate), events);
-		return card.render(item);
+	const productList = data.map((item) => {
+		const catalog = new ProductView<ICatalog>(cloneTemplate(cardTemplate), events);
+		return catalog.render(item);
 	});
-	page.render({ catalog: cardList });
+	page.render({ catalog: productList });
 });
 
+events.on('card:select', (data: TProductId) => {
+	modal.open();
+	const product = catalog.find(data.id);
+
+	if (product) {
+		const previewData = Object.assign(product);
+		modal.render({ content: previewCard.render(previewData) });
+	}
+});
+
+//================================================
 
 
 
 
+//================================================
 // Получаем данные с Api
 api.get('/product')
   .then((res: IApi) => {

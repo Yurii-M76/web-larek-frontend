@@ -1,3 +1,4 @@
+import { ICatalog } from "../types";
 import { CDN_URL } from "../utils/constants";
 import { ensureElement } from "../utils/utils";
 import { View } from "./base/View";
@@ -11,7 +12,7 @@ const categoryClasses: Record<string, string> = {
   'хард-скил': 'card__category_hard',
 };
 
-export class CardView<T> extends View<T> {
+export class ProductView<T> extends View<T> {
   protected _id: string;
   protected _category: HTMLElement;
   protected _title: HTMLElement;
@@ -27,9 +28,9 @@ export class CardView<T> extends View<T> {
     this._image = ensureElement<HTMLImageElement>('.card__image', container);
 		this._price = ensureElement<HTMLElement>('.card__price', container);
 
-    this.container.addEventListener('click', () =>
+    this.container.addEventListener('click', () => {
 			this.events.emit('card:select', { id: this.id })
-		);
+    });
   }
 
   protected toggleCategoryClass(value: string) {
@@ -39,6 +40,9 @@ export class CardView<T> extends View<T> {
   set id(value: string) {
     this._id = value
   }
+  get id() {
+		return this._id;
+	}
 
   set category(value: string) {
 		this.toggleCategoryClass(value);
@@ -60,4 +64,45 @@ export class CardView<T> extends View<T> {
       this.setText(this._price, 'Бесценно');
     }
   }
+}
+
+type IPreviewCard = ICatalog & { valid: boolean; state: boolean };
+export class PreviewCard extends ProductView<IPreviewCard> {
+	protected _description: HTMLParagraphElement;
+	protected button: HTMLButtonElement;
+
+	constructor(container: HTMLElement, events: IEvents) {
+		super(container, events);
+		this._description = ensureElement<HTMLParagraphElement>('.card__text', container);
+		this.button = ensureElement<HTMLButtonElement>('.card__button', container);
+
+		// this.button.addEventListener('click', () => {
+		// 	if (this.button.textContent === BUY_BUTTON_TEXT) {
+		// 		this.events.emit('basket:add', { id: this.id });
+		// 	} else {
+		// 		this.events.emit('basket:remove', { id: this.id });
+		// 	}
+		// });
+	}
+
+	set description(value: string) {
+		this.setText(this._description, value);
+	}
+
+	get valid() {
+		return !this.button.disabled;
+	}
+
+	set valid(state: boolean) {
+		this.setDisabled(this.button, !state);
+	}
+
+	// set state(state: boolean) {
+	// 	if (!this.valid) {
+	// 		this.setText(this.button, UNABLE_BUTTON_TEXT);
+	// 	} else {
+	// 		const text = state ? BUY_BUTTON_TEXT : REMOVE_BUTTON_TEXT;
+	// 		this.setText(this.button, text);
+	// 	}
+	// }
 }

@@ -9,10 +9,12 @@ export interface ICatalog {
   image: string,
   title: string,
   category: string,
-  price: number | null
+  price: number | null,
+  valid?: boolean,
+  state?: boolean,
 }
 
-
+export type TProductId = Pick<ICatalog, 'id'>;
 
 
 // /** Интерфейс данных товара */
