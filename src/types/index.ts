@@ -12,6 +12,7 @@ export interface ICatalog {
   price: number | null,
   valid?: boolean,
   state?: boolean,
+  list?: HTMLElement[]
 }
 
 export type TProductId = Pick<ICatalog, 'id'>;

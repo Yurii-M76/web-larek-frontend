@@ -8,11 +8,11 @@ interface IPageView {
 }
 
 export class PageView extends View<IPageView> {
+	protected events: IEvents;
 	protected _basketButton: HTMLElement;
 	protected _catalog: HTMLElement;
 	protected _counter: HTMLSpanElement;
   protected _wrapper: HTMLDivElement;
-	protected events: IEvents;
 
 	constructor(container: HTMLElement, events: IEvents) {
 		super(container);
