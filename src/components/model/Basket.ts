@@ -1,11 +1,11 @@
-import { IProduct, IBasket } from '../../types';
+import { IProduct, IProductList } from '../../types';
 import { Model } from './Model';
 import { IEvents } from '../base/events';
 
-export class Basket extends Model<IBasket> {
+export class Basket extends Model<IProductList> {
 	protected _items: IProduct[];
 
-	constructor(data: Partial<IBasket>, events: IEvents) {
+	constructor(data: Partial<IProductList>, events: IEvents) {
 		super(data, events);
 		this._items = [];
 	}
