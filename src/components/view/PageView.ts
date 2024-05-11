@@ -1,18 +1,14 @@
-import { ensureElement } from "../utils/utils";
-import { View } from "./base/View";
-import { IEvents } from "./base/events";
+import { IPage } from '../../types';
+import { ensureElement } from '../../utils/utils';
+import { View } from '../base/View';
+import { IEvents } from '../base/events';
 
-interface IPageView {
-	catalog: HTMLElement[];
-	counter: number;
-}
-
-export class PageView extends View<IPageView> {
-	protected events: IEvents;
+export class Page extends View<IPage> {
 	protected _basketButton: HTMLElement;
 	protected _catalog: HTMLElement;
 	protected _counter: HTMLSpanElement;
-  protected _wrapper: HTMLDivElement;
+	protected _wrapper: HTMLDivElement;
+	protected events: IEvents;
 
 	constructor(container: HTMLElement, events: IEvents) {
 		super(container);
@@ -20,7 +16,7 @@ export class PageView extends View<IPageView> {
 		this._basketButton = ensureElement<HTMLElement>('.header__basket');
 		this._counter = ensureElement<HTMLSpanElement>('.header__basket-counter');
 		this._catalog = ensureElement<HTMLElement>('.gallery');
-    this._wrapper = ensureElement<HTMLDivElement>('.page__wrapper', container);
+		this._wrapper = ensureElement<HTMLDivElement>('.page__wrapper', container);
 
 		this._basketButton.addEventListener('click', () =>
 			events.emit('basket:open')
@@ -35,7 +31,7 @@ export class PageView extends View<IPageView> {
 		this.setText(this._counter, value);
 	}
 
-  lockScroll(state: boolean) {
-    this.toggleClass(this._wrapper, 'page__wrapper_locked', state);
-  }
+	lock(state: boolean) {
+		this.toggleClass(this._wrapper, 'page__wrapper_locked', state);
+	}
 }

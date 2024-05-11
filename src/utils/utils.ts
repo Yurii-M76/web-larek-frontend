@@ -46,7 +46,7 @@ export function ensureElement<T extends HTMLElement>(selectorElement: SelectorEl
 
 export function cloneTemplate<T extends HTMLElement>(query: string | HTMLTemplateElement): T {
     const template = ensureElement(query) as HTMLTemplateElement;
-    console.log(template.content.firstElementChild.cloneNode(true));
+    // console.log(template.content.firstElementChild.cloneNode(true));
     return template.content.firstElementChild.cloneNode(true) as T;
 }
 

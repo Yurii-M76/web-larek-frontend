@@ -1,16 +1,16 @@
-import { ICatalog } from "../types";
-import { Model } from "./base/Model";
-import { IEvents } from "./base/events";
+import { IProduct, IBasket } from '../../types';
+import { Model } from '../base/Model';
+import { IEvents } from '../base/events';
 
-export class BasketModel extends Model<{items: ICatalog[]}> {
-	protected _items: ICatalog[];
+export class Basket extends Model<IBasket> {
+	protected _items: IProduct[];
 
-	constructor(data: Partial<{items: ICatalog[]}>, events: IEvents) {
+	constructor(data: Partial<IBasket>, events: IEvents) {
 		super(data, events);
 		this._items = [];
 	}
 
-	add(item: ICatalog) {
+	add(item: IProduct) {
 		const product = this._items.find((product) => product.id === item.id);
 		if (!product) {
 			this._items.push(item);
@@ -23,7 +23,7 @@ export class BasketModel extends Model<{items: ICatalog[]}> {
 		this.emitChanges('basket:items-changed', { id: id });
 	}
 
-	has(id: string): boolean {
+	contains(id: string): boolean {
 		const item = this._items.find((item) => item.id === id);
 		return Boolean(item);
 	}
@@ -47,7 +47,7 @@ export class BasketModel extends Model<{items: ICatalog[]}> {
 		return this._items.length;
 	}
 
-	getIdItems() {
+	getIdList() {
 		return this._items.map((item) => item.id);
 	}
 }

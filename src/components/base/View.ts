@@ -1,14 +1,4 @@
-interface IView<T> {
-	toggleClass(element: HTMLElement, className: string, force?: boolean): void;
-	setText(element: HTMLElement, value: unknown): void;
-	setDisabled(element: HTMLElement, state: boolean): void;
-	setHidden(element: HTMLElement): void;
-	setVisible(element: HTMLElement): void;
-	setImage(element: HTMLElement, src: string, alt?: string): void;
-	render(data?: Partial<T>): HTMLElement;
-}
-
-export abstract class View<T> implements IView<T> {
+export abstract class View<T> {
 	protected readonly container: HTMLElement;
 
 	constructor(container: HTMLElement) {
@@ -24,6 +14,7 @@ export abstract class View<T> implements IView<T> {
 		if (!element) return;
 		element.textContent = String(value);
 	}
+	
 	setDisabled(element: HTMLElement, state: boolean): void {
 		if (!element) return;
 		if (state) {

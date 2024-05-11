@@ -1,66 +1,101 @@
-export interface IApi {
-  total: number;
-  items: ICatalog[];
+export interface IModel {
+	emitChanges(event: string, data?: object): void;
 }
 
-export interface ICatalog {
-  id: string,
-  description: string,
-  image: string,
-  title: string,
-  category: string,
-  price: number | null,
-  valid?: boolean,
-  state?: boolean,
-  list?: HTMLElement[]
+export interface IAppApi {
+	getProductList(): Promise<IProduct[]>;
+	getProductItem(id: string): Promise<IProduct>;
+	postOrder(order: TOrderData): Promise<IOrderResult>;
 }
 
-export type TProductId = Pick<ICatalog, 'id'>;
+export interface IPage {
+	catalog: HTMLElement[];
+	counter: number;
+}
 
+export interface IProduct {
+	id: string;
+	title: string;
+	description: string;
+	category: string;
+	price: number;
+	image: string;
+}
 
-// /** Интерфейс данных товара */
-// export interface IProductData {
-// 	id: string;
-// 	title: string;
-// 	description: string;
-// 	image: string;
-// 	category: 'софт-скил' | 'хард-скил' | 'другое' | 'дополнительное' | 'кнопка';
-// 	price: number | null;
-// }
+export interface IProductList {
+	items: IProduct[];
+}
 
-// /** Интерфейс товаров в каталоге*/
-// export interface IProductsList {
-// 	products: IProductData[];
-// 	preview: string | null;
-// 	events: IEvents;
-// 	get(data: string): IProductData;
-// }
+export type TProductId = Pick<IProduct, 'id'>;
+export type TProductCard = Omit<IProduct, 'description'>;
+export type TPreviewCard = IProduct & { valid: boolean; state: boolean };
 
-// /** Интерфейс корзины */
-// export interface IBasket {
-// 	items: Map<string, number>; 
-//   total: number;
-// 	events: IEvents;
-// 	add(id: string): void;
-// 	remove(id: string): void;
-// 	disableButton(total: number): boolean;
-// 	clear(): void;
-// }
+export interface IModal {
+	content: HTMLElement;
+}
 
-// /** Интерфейс формы заказа */
-// export interface IOrder {
-//   payment: 'card' | 'cash';
-// 	address: string;
-//   email: string;
-//   phone: string;
-// 	checkValidation(data: Record<keyof TOrderContacts, string>): boolean;
-// }
+export type TBasketCard = Omit<IProduct, 'description' | 'category' | 'image'> & {
+	index: number;
+};
 
-// /** Тип данных товара на странице */
-// export type TProductItem = Pick<IProductData, 'category' | 'title' | 'image' | 'price'>;
+export interface IBasket {
+	items: IProduct[];
+}
 
-// /** Тип данных для валидации формы оформления заказа */
-// export type TOrderContacts = Pick<IOrder, 'address' | 'email' | 'phone'>;
+export interface IBasketView {
+	list: HTMLElement[];
+	valid: boolean;
+	price: number;
+}
 
-// /** Тип данных для модального окна успешного оформления заказа */
-// export type TSuccessOrder = Pick<IBasket, 'total'>;
+export type TPayment = 'card' | 'cash';
+
+export interface IAddress {
+	payment: TPayment;
+	address: string;
+}
+
+export interface IOrderList {
+	total: number;
+	items: string[];
+}
+
+export interface IContacts {
+	email: string;
+	phone: string;
+}
+
+export type TOrderData = IAddress & IContacts & IOrderList;
+
+export interface IOrder extends TOrderData {
+	toApiObject(): TOrderData;
+}
+
+export interface IOrderBuilder {
+	delivery: IAddress;
+	contacts: IContacts;
+	orderList: IOrderList;
+	result: TOrderData;
+}
+
+export interface IOrderResult {
+	id: string;
+	total: number;
+}
+
+export interface IFormCheck {
+	valid: boolean;
+}
+
+export interface IForm extends IFormCheck {
+	render(data?: IFormCheck): HTMLElement;
+}
+
+export interface IInputData {
+	field: string;
+	value: string;
+}
+
+export interface ISuccessView {
+	total: number;
+}

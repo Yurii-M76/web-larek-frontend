@@ -1,8 +1,9 @@
-import { ensureElement } from "../utils/utils";
-import { View } from "./base/View";
-import { IEvents } from "./base/events";
+import { IModal } from '../../types';
+import { ensureElement } from '../../utils/utils';
+import { View } from '../base/View';
+import { IEvents } from '../base/events';
 
-export class Modal extends View<{content: HTMLElement}> {
+export class Modal extends View<IModal> {
 	protected events: IEvents;
 	protected _closeButton: HTMLButtonElement;
 	protected _content: HTMLElement;
@@ -10,11 +11,12 @@ export class Modal extends View<{content: HTMLElement}> {
 	constructor(container: HTMLElement, events: IEvents) {
 		super(container);
 		this.events = events;
-
-		this._closeButton = ensureElement<HTMLButtonElement>('.modal__close',container);
+		this._closeButton = ensureElement<HTMLButtonElement>(
+			'.modal__close',
+			container
+		);
 		this._content = ensureElement<HTMLDivElement>('.modal__content', container);
 		this._closeButton.addEventListener('click', () => this.close());
-
 		this.container.addEventListener('mousedown', (evt: MouseEvent) => {
 			const target = evt.target as HTMLElement;
 			if (target.classList.contains('modal')) {
