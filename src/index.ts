@@ -1,5 +1,5 @@
 import './scss/styles.scss';
-import { AppApi } from './components/AppApi';
+import { AppApi } from './components/model/AppApi';
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { CDN_URL, API_URL } from './utils/constants';
 import {
@@ -15,7 +15,7 @@ import {
 	TProductId,
 	TPayment,
 } from './types';
-import { Page } from './components/view/PageView';
+import { Page } from './components/view/Page';
 import { Catalog } from './components/model/Catalog';
 import { EventEmitter } from './components/base/events';
 import { CatalogView } from './components/view/CatalogView';
@@ -25,7 +25,7 @@ import { BasketView } from './components/view/BasketView';
 import { OrderForm } from './components/view/OrderForm';
 import { ContactsForm } from './components/view/ContactsForm';
 import { SuccessView } from './components/view/SuccessView';
-import { OrderBuilder } from './components/model/Order';
+import { OrderBuilder } from './components/model/OrderBuilder';
 import { BasketCard } from './components/view/BasketCard';
 import { ProductPreview } from './components/view/ProductPreview';
 
@@ -68,11 +68,11 @@ events.on('card:select', (data: TProductId) => {
 		? modal.open()
 		: modal.close();
 
-	const product = catalog.find(data.id);
+	const product = catalog.getId(data.id);
 	if (product) {
 		const previewData = Object.assign(product, {
 			valid: Boolean(product.price),
-			state: !basket.contains(data.id),
+			state: !basket.check(data.id),
 		});
 		modal.render({ content: productPreview.render(previewData) });
 	}
@@ -89,7 +89,7 @@ events.on('basket:open', () => {
 });
 
 events.on('basket:add', (data: TProductId) => {
-	const product = catalog.find(data.id);
+	const product = catalog.getId(data.id);
 	basket.add(product);
 });
 
@@ -98,7 +98,7 @@ events.on('basket:remove', (data: TProductId) => {
 });
 
 events.on('basket:items-changed', (data: TProductId) => {
-	productPreview.render({ valid: true, state: !basket.contains(data.id) });
+	productPreview.render({ valid: true, state: !basket.check(data.id) });
 	page.render({ counter: basket.length });
 	const cardList = basket.items.map((item, index) => {
 		const cardData = Object.assign(item, { index: index + 1 });
@@ -158,7 +158,7 @@ events.on('contacts:submit', () => {
 		phone: contactsForm.phone,
 	};
 	orderBuilder.contacts = contactsData;
-	const apiObj: TOrderData = orderBuilder.result.toApiObject();
+	const apiObj: TOrderData = orderBuilder.result.readyОrder();
 	api
 		.postOrder(apiObj)
 		.then((data: IOrderResult) => {

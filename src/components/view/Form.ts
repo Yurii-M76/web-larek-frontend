@@ -1,6 +1,6 @@
 import { IFormCheck } from '../../types';
 import { ensureAllElements, ensureElement } from '../../utils/utils';
-import { View } from '../base/View';
+import { View } from './View';
 import { IEvents } from '../base/events';
 
 export class Form<T> extends View<IFormCheck> {
@@ -33,23 +33,23 @@ export class Form<T> extends View<IFormCheck> {
 		});
 	}
 
-	emitInput() {
-		this.events.emit(`${this.container.name}:input`);
+	set valid(value: boolean) {
+		this.setDisabled(this._submit, !value);
 	}
 
 	get valid(): boolean {
 		return this.inputList.every((item) => item.value.length > 0);
 	}
 
-	set valid(value: boolean) {
-		this.setDisabled(this._submit, !value);
-	}
-
 	set error(value: string) {
 		this.setText(this._error, value);
 	}
 
-	clear() {
+	emitInput(): void {
+		this.events.emit(`${this.container.name}:input`);
+	}
+
+	clear(): void {
 		this.container.reset();
 	}
 

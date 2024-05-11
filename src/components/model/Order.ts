@@ -1,8 +1,6 @@
-import { IContacts, IAddress, IOrder, IOrderBuilder, TOrderData, IOrderList, TPayment } from '../../types';
-import { Model } from '../base/Model';
-import { IEvents } from '../base/events';
+import { IOrder, TOrderData, TPayment } from '../../types';
 
-class Order implements IOrder {
+export class Order implements IOrder {
 	protected _payment: TPayment;
 	protected _address: string;
 	protected _email: string;
@@ -34,7 +32,7 @@ class Order implements IOrder {
 		this._items = list;
 	}
 
-	toApiObject(): TOrderData {
+	readyОrder(): TOrderData {
 		return {
 			payment: this._payment,
 			email: this._email,
@@ -43,33 +41,5 @@ class Order implements IOrder {
 			total: this._total,
 			items: this._items,
 		};
-	}
-}
-
-export class OrderBuilder extends Model<IOrderBuilder> {
-	protected order: IOrder;
-
-	constructor(data: Partial<IOrderBuilder>, events: IEvents) {
-		super(data, events);
-		this.order = new Order();
-	}
-
-	set delivery(delivery: IAddress) {
-		this.order.payment = delivery.payment;
-		this.order.address = delivery.address;
-	}
-
-	set contacts(contacts: IContacts) {
-		this.order.email = contacts.email;
-		this.order.phone = contacts.phone;
-	}
-
-	set orderList(orderList: IOrderList) {
-		this.order.total = orderList.total;
-		this.order.items = orderList.items;
-	}
-
-	get result(): IOrder {
-		return this.order;
 	}
 }

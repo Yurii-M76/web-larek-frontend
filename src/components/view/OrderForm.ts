@@ -1,6 +1,6 @@
 import { ensureAllElements, ensureElement } from '../../utils/utils';
 import { IEvents } from '../base/events';
-import { Form } from './FormView';
+import { Form } from './Form';
 import { IContacts, IAddress } from '../../types';
 
 export class OrderForm extends Form<IAddress> {
@@ -33,20 +33,20 @@ export class OrderForm extends Form<IAddress> {
 		});
 	}
 
-	protected toggleCard(state = true) {
+	toggleCard(state = true): void {
 		this.toggleClass(this.onlineButton, 'button_alt-active', state);
 	}
 
-	protected toggleCash(state = true) {
+	toggleCash(state = true): void {
 		this.toggleClass(this.cashButton, 'button_alt-active', state);
 	}
 
-	protected resetButtons() {
+	resetButtons(): void { 
 		this.toggleCard(false);
 		this.toggleCash(false);
 	}
 
-	protected getActiveButton(): HTMLButtonElement | null {
+	getActiveButton(): HTMLButtonElement | null {
 		if (this.onlineButton.classList.contains('button_alt-active')) {
 			return this.onlineButton;
 		} else if (this.cashButton.classList.contains('button_alt-active')) {
@@ -71,12 +71,12 @@ export class OrderForm extends Form<IAddress> {
 		return this.addressInput.value;
 	}
 
+	set valid(value: boolean) {
+		super.valid = value;
+	}
+
 	get valid(): boolean {
 		const isInputValid = super.valid;
 		return isInputValid && this.payment !== '';
-	}
-
-	set valid(value: boolean) {
-		super.valid = value;
 	}
 }

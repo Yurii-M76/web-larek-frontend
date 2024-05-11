@@ -1,12 +1,12 @@
 import { IModal } from '../../types';
 import { ensureElement } from '../../utils/utils';
-import { View } from '../base/View';
+import { View } from './View';
 import { IEvents } from '../base/events';
 
 export class Modal extends View<IModal> {
-	protected events: IEvents;
-	protected _closeButton: HTMLButtonElement;
 	protected _content: HTMLElement;
+	protected _closeButton: HTMLButtonElement;
+	protected events: IEvents;
 
 	constructor(container: HTMLElement, events: IEvents) {
 		super(container);

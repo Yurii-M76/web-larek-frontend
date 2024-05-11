@@ -1,12 +1,12 @@
-import { View } from '../base/View';
+import { View } from './View';
 import { ensureElement } from '../../utils/utils';
-import { TBasketCard, TPreviewCard } from '../../types';
+import { TProductId } from '../../types';
 import { IEvents } from '../base/events';
 
 export class Card<T> extends View<T> {
 	protected _title: HTMLHeadingElement;
 	protected _price: HTMLSpanElement;
-	protected _id: string;
+	protected _id: TProductId;
 	protected events: IEvents;
 
 	constructor(container: HTMLElement, events: IEvents) {
@@ -15,30 +15,30 @@ export class Card<T> extends View<T> {
 		this._title = ensureElement<HTMLHeadingElement>('.card__title', container);
 		this._price = ensureElement<HTMLSpanElement>('.card__price', container);
 	}
-
-	get id() {
-		return this._id;
-	}
-
-	set id(value: string) {
+	
+	set id(value: TProductId) {
 		this._id = value;
 	}
 
-	get title() {
-		return this._title.textContent || '';
+	get id(): TProductId {
+		return this._id;
 	}
 
 	set title(value: string) {
 		this.setText(this._title, value);
 	}
 
-	get price() {
-		return this._price.textContent || '';
+	get title(): string {
+		return this._title.textContent;
 	}
 
 	set price(value: string) {
 		const priceText = value ? `${value} синапсов` : 'Бесценно';
 		this.setText(this._price, priceText);
+	}
+
+	get price(): string {
+		return this._price.textContent;
 	}
 }
 

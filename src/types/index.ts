@@ -68,7 +68,7 @@ export interface IContacts {
 export type TOrderData = IAddress & IContacts & IOrderList;
 
 export interface IOrder extends TOrderData {
-	toApiObject(): TOrderData;
+	readyОrder(): TOrderData;
 }
 
 export interface IOrderBuilder {

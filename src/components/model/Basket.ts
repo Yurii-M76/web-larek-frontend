@@ -1,5 +1,5 @@
 import { IProduct, IBasket } from '../../types';
-import { Model } from '../base/Model';
+import { Model } from './Model';
 import { IEvents } from '../base/events';
 
 export class Basket extends Model<IBasket> {
@@ -10,7 +10,21 @@ export class Basket extends Model<IBasket> {
 		this._items = [];
 	}
 
-	add(item: IProduct) {
+	get items(): IProduct[] {
+		return this._items;
+	}
+
+	get total(): number {
+		return this._items.reduce((sum, item) => {
+			return item.price + sum;
+		}, 0);
+	}
+
+	get length(): number {
+		return this._items.length;
+	}
+
+	add(item: IProduct): void {
 		const product = this._items.find((product) => product.id === item.id);
 		if (!product) {
 			this._items.push(item);
@@ -18,36 +32,22 @@ export class Basket extends Model<IBasket> {
 		}
 	}
 
-	remove(id: string) {
+	remove(id: string): void {
 		this._items = this._items.filter((item) => item.id !== id);
 		this.emitChanges('basket:items-changed', { id: id });
 	}
 
-	contains(id: string): boolean {
+	check(id: string): boolean {
 		const item = this._items.find((item) => item.id === id);
 		return Boolean(item);
 	}
 
-	clear() {
+	clear(): void {
 		this._items = [];
 		this.emitChanges('basket:items-changed');
 	}
 
-	get items() {
-		return this._items;
-	}
-
-	get total() {
-		return this._items.reduce((sum, item) => {
-			return item.price + sum;
-		}, 0);
-	}
-
-	get length() {
-		return this._items.length;
-	}
-
-	getIdList() {
+	getIdList(): string[] {
 		return this._items.map((item) => item.id);
 	}
 }

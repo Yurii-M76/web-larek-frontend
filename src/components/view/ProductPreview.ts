@@ -24,11 +24,11 @@ export class ProductPreview extends CatalogView<TPreviewCard> {
 		this.setText(this._description, value);
 	}
 
-	get valid() {
-		return !this.button.disabled;
-	}
-
 	set valid(state: boolean) {
 		this.setDisabled(this.button, !state);
+	}
+
+	get valid(): boolean {
+		return !this.button.disabled;
 	}
 }

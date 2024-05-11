@@ -1,7 +1,7 @@
 import { TBasketCard } from '../../types';
 import { ensureElement } from '../../utils/utils';
 import { IEvents } from '../base/events';
-import { Card } from './CardView';
+import { Card } from './Card';
 
 export class BasketCard extends Card<TBasketCard> {
 	protected _index: HTMLSpanElement;

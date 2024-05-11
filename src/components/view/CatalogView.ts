@@ -1,12 +1,12 @@
 import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
-import { Card } from "./CardView";
+import { Card } from "./Card";
 
 const categories: Record<string, string> = {
 	'софт-скил': 'card__category_soft',
-	другое: 'card__category_other',
-	дополнительное: 'card__category_additional',
-	кнопка: 'card__category_button',
+	'другое': 'card__category_other',
+	'дополнительное': 'card__category_additional',
+	'кнопка': 'card__category_button',
 	'хард-скил': 'card__category_hard',
 };
 
@@ -25,23 +25,23 @@ export class CatalogView<T> extends Card<T> {
 		);
 	}
 
-	protected toggleCategoryClass(value: string) {
-		if (value in categories) {
-			const classModifier = categories[value];
-			this.toggleClass(this._category, classModifier, true);
-		}
-	}
-
-	get category() {
-		return this._category.textContent || '';
-	}
-
 	set category(value: string) {
 		this.toggleCategoryClass(value);
 		this.setText(this._category, value);
 	}
 
+	get category(): string {
+		return this._category.textContent;
+	}
+
 	set image(value: string) {
 		this.setImage(this._image, value);
+	}
+
+	toggleCategoryClass(value: string): void {
+		if (value in categories) {
+			const classModifier = categories[value];
+			this.toggleClass(this._category, classModifier, true);
+		}
 	}
 }

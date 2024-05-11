@@ -1,6 +1,6 @@
 import { IPage } from '../../types';
 import { ensureElement } from '../../utils/utils';
-import { View } from '../base/View';
+import { View } from './View';
 import { IEvents } from '../base/events';
 
 export class Page extends View<IPage> {
@@ -31,7 +31,7 @@ export class Page extends View<IPage> {
 		this.setText(this._counter, value);
 	}
 
-	lock(state: boolean) {
+	lock(state: boolean): void {
 		this.toggleClass(this._wrapper, 'page__wrapper_locked', state);
 	}
 }

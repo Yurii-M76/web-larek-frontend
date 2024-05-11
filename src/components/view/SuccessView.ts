@@ -1,12 +1,13 @@
 import { ISuccessView } from '../../types';
 import { ensureElement } from '../../utils/utils';
-import { View } from '../base/View';
+import { View } from './View';
 import { IEvents } from '../base/events';
 
 export class SuccessView extends View<ISuccessView> {
+	protected description: HTMLParagraphElement;
 	protected button: HTMLButtonElement;
 	protected events: IEvents;
-	protected description: HTMLParagraphElement;
+
 	constructor(container: HTMLElement, events: IEvents) {
 		super(container);
 		this.button = ensureElement<HTMLButtonElement>('.button', container);

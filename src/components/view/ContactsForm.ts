@@ -1,6 +1,6 @@
 import { IContacts } from '../../types';
 import { IEvents } from '../base/events';
-import { Form } from './FormView';
+import { Form } from './Form';
 
 export class ContactsForm extends Form<IContacts> {
 	protected emailInput: HTMLInputElement;

@@ -1,6 +1,6 @@
 import { IBasketView } from '../../types';
 import { ensureElement } from '../../utils/utils';
-import { View } from '../base/View';
+import { View } from './View';
 import { IEvents } from '../base/events';
 
 export class BasketView extends View<IBasketView> {

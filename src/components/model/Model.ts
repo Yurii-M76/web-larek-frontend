@@ -1,5 +1,5 @@
 import { IProduct } from '../../types';
-import { IEvents } from './events';
+import { IEvents } from '../base/events';
 
 /**
  * Абстрактный класс для хранения и обработки данных,
