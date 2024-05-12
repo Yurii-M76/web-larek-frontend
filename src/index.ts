@@ -98,7 +98,6 @@ events.on('basket:remove', (data: TProductId) => {
 });
 
 events.on('basket:items-changed', (data: TProductId) => {
-	productPreview.render({ valid: true, state: !basket.check(data.id) });
 	page.render({ counter: basket.length });
 	const cardList = basket.items.map((item, index) => {
 		const cardData = Object.assign(item, { index: index + 1 });
@@ -133,14 +132,14 @@ function validate(form: IForm) {
 
 events.on('order:input', () => {
 	validate(orderView);
-});
-
-events.on('order:submit', () => {
 	const deliveryData: IAddress = {
 		payment: orderView.payment as TPayment,
 		address: orderView.address,
 	};
 	orderBuilder.delivery = deliveryData;
+});
+
+events.on('order:submit', () => {
 	modal.render({
 		content: contactsForm.render({
 			valid: contactsForm.valid,
@@ -150,14 +149,14 @@ events.on('order:submit', () => {
 
 events.on('contacts:input', () => {
 	validate(contactsForm);
-});
-
-events.on('contacts:submit', () => {
 	const contactsData: IContacts = {
 		email: contactsForm.email,
 		phone: contactsForm.phone,
 	};
 	orderBuilder.contacts = contactsData;
+});
+
+events.on('contacts:submit', () => {
 	const apiObj: TOrderData = orderBuilder.result.readyОrder();
 	api
 		.postOrder(apiObj)
